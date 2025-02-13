@@ -33,7 +33,7 @@ const HootDetails = () => {
           <p>{hoot.category.toUpperCase()}</p>
           <h1>{hoot.title}</h1>
           <p>
-            {`${hoot.author.username} posted on
+            {`${hoot.author?.username} posted on
             ${new Date(hoot.createdAt).toLocaleDateString()}`}
           </p>
         </header>
