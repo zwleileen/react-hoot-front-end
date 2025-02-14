@@ -1,18 +1,21 @@
 // src/components/HootDetails/HootDetails.jsx
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 // src/components/HootDetails/HootDetails.jsx
 
 import { useState, useEffect } from 'react';
 import * as hootService from '../../services/hootService';
 import CommentForm from '../CommentForm/CommentForm';
+import { UserContext } from '../../contexts/UserContext';
+import { useContext } from 'react';
 
 
-
-const HootDetails = () => {
+const HootDetails = (props) => {
 
     const { hootId } = useParams();
     console.log('hootId', hootId);
 
+    // Access the user object from the UserContext
+    const { user } = useContext(UserContext);
     const [hoot, setHoot] = useState(null);
 
     useEffect(() => {
@@ -26,14 +29,11 @@ const HootDetails = () => {
   // Verify the hoot state is set correctly:
     console.log('hoot state:', hoot);
 
-    // src/components/HootDetails/HootDetails.jsx
 
   const handleAddComment = async (commentFormData) => {
     const newComment = await hootService.createComment(hootId, commentFormData);
     setHoot({ ...hoot, comments: [...hoot.comments, newComment] });
   };
-
-
 
     if (!hoot) return <main>Loading...</main>;
 
@@ -47,6 +47,12 @@ const HootDetails = () => {
             {`${hoot.author?.username} posted on
             ${new Date(hoot.createdAt).toLocaleDateString()}`}
           </p>
+          {hoot.author._id === user._id && (
+              <>
+                <Link to={`/hoots/${hootId}/edit`}>Edit</Link>
+                <button onClick={() => props.handleDeleteHoot(hootId)}>Delete</button>
+              </>
+            )}
         </header>
         <p>{hoot.text}</p>
       </section>
