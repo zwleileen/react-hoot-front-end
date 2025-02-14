@@ -91,4 +91,26 @@ async function update(hootId, hootFormData) {
   }
 }
 
-export { index, show, create, createComment, deleteHoot, update };
+const deleteComment = async (hootId, commentId) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${hootId}/comments/${commentId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export {
+  index,
+  show,
+  create,
+  createComment,
+  deleteHoot,
+  update,
+  deleteComment,
+};

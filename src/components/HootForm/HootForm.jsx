@@ -19,10 +19,13 @@ const HootForm = (props) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    try {
   if (hootId) {
     props.handleUpdateHoot(hootId, formData);
   } else {
     props.handleAddHoot(formData);
+  } } catch (error) {
+    console.log(error)
   }
   };
 
